@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>表格练习</title>
+    <script src="./vue1026.js"></script>
+    <style>
+        table {
+            width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table th {
+            color: #fff;
+            background-color: #0094ff;
+        }
+
+        table th,
+        td {
+            height: 30px;
+            border: 1px solid #000;
+        }
+         /* 使没有宽高的盒子垂直居中 */
+        .box{
+            margin: 30px 0;
+            margin-left: 50%;
+            transform: translate(-50%);
+        }
+     
+      input{
+          border: 1px solid #000;
+          padding-left: 4px;
+      }
+    </style>
+ 
+</head>
+
+<body id="app">
+    <div class="box">
+        <input type="text"
+               v-model="id"
+               placeholder="请输入序号">
+        <input type="text"
+               v-model="cname"
+               placeholder="请输入名字">
+        <button @click="addData">点我添加</button>
+        筛选：<input type="text"
+                    v-model="sname"
+                    placeholder="请输入筛选条件">
+    </div>
+    <table>
+
+        <tr>
+            <th>编码</th>
+            <th>名字</th>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+        <!-- 没有数据时候 显示出来 -->
+        <tr v-show="list.length ==0">
+            <td colspan="4">当前列表没有任何数据  </td>
+        </tr>
+        <!--   遍历  过滤器 -->
+        <tr v-for="item in list | filterBy sname in 'name'" >
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td> {{item.ctime |datefmt}}</td>
+            <td>
+                <a href="javascript:;" @click="delData(item.id)">删除</a>
+            </td>
+        </tr>
+    </table>
+</body>
+<script>
+    //自定义全局过滤器
+    //格式化时间
+     Vue.filter('datefmt',function(input){
+        var res = '';
+        var year = input.getFullYear();
+        var month =input.getMonth() +1;
+        var day =input.getDate();
+        res = year+'-'+month+'-'+day;
+        return res;
+
+     })
+    new Vue({
+        el: "#app",
+        data: {
+            list: [{
+                    id: 1,
+                    name: '宝马',
+                    ctime: new Date()
+                },
+                {
+                    id: 2,
+                    name: '奔驰',
+                    ctime: new Date()
+                },
+                {
+                    id: 3,
+                    name: '大众',
+                    ctime: new Date()
+                },
+
+
+            ],
+            id:'',
+            cname:'',
+            sname:''
+        },
+        //添加信息
+        methods: {
+            addData: function () {
+                if(this.id == '' || this.cname == ''){
+                    alert('请输入信息')
+                    return ;
+                }
+              var p ={id:this.id,name:this.cname,ctime:new Date()}
+              this.list.push(p);
+              this.id='',
+              this.cname=''
+            },
+        //删除信息
+            delData:function(id){
+                //交互提醒
+                if(!confirm("真的要删除吗？")){
+                    return;
+                }
+                //查找id
+                var index = this.list.findIndex(function(item){
+                    return item.id ==id;
+                })
+                this.list.splice(index,1);
+            }
+        }
+
+    })
+</script>
+
+</html>
