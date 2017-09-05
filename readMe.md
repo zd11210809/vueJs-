@@ -7,5 +7,4 @@
 - 格式化时间
 - 使无宽高的盒子居中显示
 
-[!table](https://github.com/zd11210809/vueJs-/blob/master/images/01.png)
-
+![table](https://github.com/zd11210809/vueJs-/blob/master/images/01.png)
