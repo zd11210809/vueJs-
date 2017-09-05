@@ -6,3 +6,6 @@
 - 自定义全局过滤器
 - 格式化时间
 - 使无宽高的盒子居中显示
+
+https://github.com/zd11210809/vueJs-/blob/master/images/01.png
+
